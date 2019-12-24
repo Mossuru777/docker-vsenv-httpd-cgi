@@ -26,9 +26,6 @@ RUN mv /usr/bin/perl /usr/bin/perl.orig \
 WORKDIR /home/circleci
 USER circleci
 
-# Define mountable directories
-VOLUME ["/var/www/html"]
-
 # Define default command
 CMD ["sudo", "-u", "root", "/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
