@@ -1,6 +1,9 @@
 FROM mossuru777/vsenv:circleci-latest
 MAINTAINER Mossuru777 "mossuru777@gmail.com"
 
+# Switch User to root
+USER root
+
 # Setup
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update \
@@ -19,11 +22,15 @@ RUN a2enmod cgi \
 RUN mv /usr/bin/perl /usr/bin/perl.orig \
     && ln -s /usr/local/bin/perl /usr/bin/perl
 
+# Switch User to circleci
+WORKDIR /home/circleci
+USER circleci
+
 # Define mountable directories
 VOLUME ["/var/www/html"]
 
 # Define default command
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD ["sudo", "-u", "root", "/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
 # Expose port
 EXPOSE 80
